@@ -1,6 +1,28 @@
 #!/usr/bin/env python3
 
+import math
+from itertools import count
 from calculations import Interval, calculate_cumulative_probs
+
+
+def find_binary(left, right):
+    result = ''
+
+    def iterate(number):
+        number *= 2
+        number, whole = math.modf(number)
+        whole = int(whole)
+        return number, whole
+
+    for _ in count():
+        left, left_whole = iterate(left)
+        right, right_whole = iterate(right)
+        result += str(right_whole)
+
+        if left_whole != right_whole:
+            break
+
+    return result
 
 
 def encode(symbol_sequence, entries):
@@ -18,6 +40,8 @@ def encode(symbol_sequence, entries):
         )
 
     print(f"Encoded interval: ({interval.left}, {interval.right})")
+    binary = find_binary(interval.left, interval.right)
+    print(f"Closest binary number: {binary}")
 
 
 def main():

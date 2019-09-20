@@ -3,7 +3,17 @@
 from calculations import Interval, calculate_cumulative_probs
 
 
-def decode(number, entries, exit_symbol):
+def find_floating(binary):
+    number = 0
+    for character in binary[::-1]:
+        number += int(character)
+        number /= 2
+    return number
+
+
+def decode(binary_number, entries, exit_symbol):
+    number = find_floating(binary_number)
+
     cumulative_probs = calculate_cumulative_probs(entries)
     interval = Interval(left=0, right=1)
     decoded = []
@@ -47,8 +57,7 @@ def main():
     if exit_symbol not in symbols:
         raise Exception("An exit symbol should be defined in symbols list")
 
-    number = input("Enter the number to decode (e.g. '0.5138'): ")
-    number = float(number)
+    number = input("Enter the number to decode (e.g. '10010010'): ")
 
     decoded = decode(number, zip(symbols, probs), exit_symbol)
     print(' '.join(decoded))
